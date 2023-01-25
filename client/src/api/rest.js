@@ -1,13 +1,17 @@
 import { render } from "../render.js";
-import { Todos } from "../store.js";
+import { Todos, TodosStatus } from "../store.js";
 
 //get
 export const getTodo = async () => {
   const response = await fetch("http://localhost:5500/api/todos");
   const data = await response.json();
   Todos.splice(0);
-  data.forEach((element) => {
+  TodosStatus.splice(0);
+  data.todolist.forEach((element) => {
     Todos.push(element);
+  });
+  data.status.forEach((element) => {
+    TodosStatus.push(element);
   });
   render();
 };

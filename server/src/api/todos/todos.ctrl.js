@@ -1,7 +1,5 @@
 import * as fs from "fs";
 
-let Todos = [];
-let Status = [];
 let Data = {};
 
 const readJson = async () => {
@@ -42,7 +40,7 @@ GET /api/todos/:id
  */
 export async function list(ctx) {
   await readJson();
-  ctx.body = Data.todolist;
+  ctx.body = Data;
 }
 
 /**
