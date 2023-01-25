@@ -5,7 +5,7 @@ const todos = new Router();
 
 todos.get("/", list);
 todos.post("/", write);
-todos.get("/:id", read);
+todos.get("/:id", read); //아직 안씀
 todos.delete("/:id", remove);
 todos.put("/:id", update);
 
