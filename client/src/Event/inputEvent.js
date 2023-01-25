@@ -5,17 +5,24 @@ import { autoResizeTextarea } from "../utils.js";
 import { postTodo, UpdateTodo } from "../api/rest.js";
 
 const checkBeforeUpdateItem = () => {
-  return (
-    BeforeUpdateItem.Title &&
-    BeforeUpdateItem.Contents &&
-    BeforeUpdateItem.Status
-  );
+  return BeforeUpdateItem.Title && BeforeUpdateItem.Contents && BeforeUpdateItem.Status;
 };
 
 const checkInputStatus = () => {
   return InputData["title"] && InputData["contents"];
 };
 
+function inputEvent() {
+  const input_title = document.querySelector(".input-title");
+  const input_contents = document.querySelector(".input-contents");
+
+  input_title.focus();
+  input_title.addEventListener("change", onChange);
+  input_title.addEventListener("keydown", autoResizeTextarea, true);
+
+  input_contents.addEventListener("change", onChange);
+  input_contents.addEventListener("keydown", autoResizeTextarea, true);
+}
 /**
  * add, update input창 이벤트 등록하는 함수
  * 1. input title로 포커스
@@ -25,18 +32,11 @@ const checkInputStatus = () => {
  * 5. 인풋 창에 blur(focusout) 이벤트 등록
  */
 export const addInputEvent = () => {
-  const input_title = document.querySelector(".input-title");
-  const input_contents = document.querySelector(".input-contents");
   const input_item = document.querySelector(".input-items");
   const cancel_btn = input_item.querySelector(".cancel-button");
   const register_btn = input_item.querySelector(".register-button");
 
-  input_title.focus();
-  input_title.addEventListener("change", onChange);
-  input_title.addEventListener("keydown", autoResizeTextarea, true);
-
-  input_contents.addEventListener("change", onChange);
-  input_contents.addEventListener("keydown", autoResizeTextarea, true);
+  inputEvent();
 
   cancel_btn.addEventListener("click", InputCancelEvent);
   register_btn.addEventListener("mousedown", addInputRegisterEvent);
@@ -57,13 +57,11 @@ const onChange = (e) => {
  * 3. input 데이터들 초기화
  */
 const InputCancelEvent = () => {
-  document
-    .querySelector(".input-items .cancel-button")
-    .addEventListener("click", () => {
-      document.querySelector(".input-items").remove();
-      if (checkBeforeUpdateItem()) render();
-      initializeBothData();
-    });
+  document.querySelector(".input-items .cancel-button").addEventListener("click", () => {
+    document.querySelector(".input-items").remove();
+    if (checkBeforeUpdateItem()) render();
+    initializeBothData();
+  });
 };
 
 const addInputFocusOutEvent = () => {
@@ -76,12 +74,7 @@ const addInputFocusOutEvent = () => {
 };
 
 const doUpdateAction = () => {
-  const index = Todos.findIndex(
-    (e) =>
-      e.Title === BeforeUpdateItem.Title &&
-      e.Contents === BeforeUpdateItem.Contents &&
-      e.Status === BeforeUpdateItem.Status
-  );
+  const index = Todos.findIndex((e) => e.Title === BeforeUpdateItem.Title && e.Contents === BeforeUpdateItem.Contents && e.Status === BeforeUpdateItem.Status);
   Todos[index] = {
     ...Todos[index],
     Title: InputData["title"],
@@ -104,9 +97,7 @@ const doUpdateAction = () => {
 };
 
 const doAddAction = () => {
-  const input_status = document
-    .querySelector(".input-items")
-    .closest("section").className;
+  const input_status = document.querySelector(".input-items").closest("section").className;
 
   // Todos.unshift({
   //   id: new Date().getTime(),

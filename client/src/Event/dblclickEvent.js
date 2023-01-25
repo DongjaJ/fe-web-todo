@@ -4,6 +4,7 @@ import { render } from "../render.js";
 import { makeInputFormTemplate } from "../template.js";
 import { Todos, TodosStatus } from "../store.js";
 import { autoResizeTextarea } from "../utils.js";
+import { checkColumnNameValidity } from "../validity.js";
 
 const updateListItem = (update_element) => {
   storeToBeUpdatedItem(update_element);
@@ -15,8 +16,9 @@ const updateListItem = (update_element) => {
 };
 
 const updateColumn = (to_be_updated_column) => {
-  const before_updated_title =
-    to_be_updated_column.querySelector(".todo-column").innerText;
+  console.log(to_be_updated_column.querySelector(".todo-column"));
+  const before_updated_title = to_be_updated_column.querySelector(".todo-column").innerText;
+  console.log(before_updated_title);
   to_be_updated_column.innerHTML = `
       <input class = "update-title" maxlength = 50 value = "${before_updated_title}"></input>
     `;
@@ -25,13 +27,15 @@ const updateColumn = (to_be_updated_column) => {
   update_title.addEventListener("focusout", () => {
     const updated_column = update_title.value;
 
-    TodosStatus[TodosStatus.findIndex((e) => e === before_updated_title)] =
-      updated_column;
+    if (!checkColumnNameValidity(updated_column)) {
+      TodosStatus[TodosStatus.findIndex((e) => e === before_updated_title)] = updated_column;
 
-    Todos.forEach((e) => {
-      if (e.Status === before_updated_title) e.Status = updated_column;
-    });
-    render();
+      Todos.forEach((e) => {
+        console.log(e.Status);
+        if (e.Status === before_updated_title) e.Status = updated_column;
+      });
+      render();
+    }
   });
 };
 
@@ -39,6 +43,7 @@ const dblclickEvent = (body) => {
   body.addEventListener("dblclick", (e) => {
     const update_element = e.target.closest(".todolist-items");
     const to_be_updated_column = e.target.closest(".todo-header");
+
     if (!(update_element || to_be_updated_column)) return;
 
     //리스트 수정
