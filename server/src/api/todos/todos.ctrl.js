@@ -48,6 +48,7 @@ export async function list(ctx) {
 /**
 특정 포스트 조회
 GET /api/todos/:id
+안씀 아직
  */
 export function read(ctx) {
   const { id } = ctx.params;
