@@ -1,6 +1,8 @@
 import * as fs from "fs";
 
 let Todos = [];
+let Status = [];
+let Data = {};
 
 const readJson = async () => {
   fs.readFile("./data.json", "utf8", async (err, data) => {
@@ -9,12 +11,14 @@ const readJson = async () => {
       return;
     }
     let jsonData = await JSON.parse(data);
-    Todos = jsonData;
+    Data.todolist = jsonData["todolist"];
+    Data.status = jsonData["status"];
+    console.log(Data);
   });
 };
 
 const writeJson = () => {
-  fs.writeFile("./data.json", JSON.stringify(Todos), (err) => {
+  fs.writeFile("./data.json", JSON.stringify(Data), (err) => {
     if (err) console.log(err);
   });
 };
@@ -27,7 +31,7 @@ POST /api/todos
 export async function write(ctx) {
   const { Id, Status, Title, Contents } = ctx.request.body;
   const todo = { Id, Status, Title, Contents };
-  Todos.unshift(todo);
+  Data.todolist.unshift(todo);
   await writeJson();
   ctx.body = todo;
 }
@@ -38,7 +42,7 @@ GET /api/todos/:id
  */
 export async function list(ctx) {
   await readJson();
-  ctx.body = Todos;
+  ctx.body = Data.todolist;
 }
 
 /**
@@ -47,7 +51,7 @@ GET /api/todos/:id
  */
 export function read(ctx) {
   const { id } = ctx.params;
-  const todo = Todos.find((todo) => todo.Id === id);
+  const todo = Data.todolist.find((todo) => todo.Id === id);
   if (!todo) {
     ctx.status = 404;
     ctx.body = {
@@ -64,7 +68,7 @@ DElETE /api/todos/:id
  */
 export async function remove(ctx) {
   const { id } = ctx.params;
-  const index = Todos.findIndex((todo) => todo.Id === id);
+  const index = Data.todolist.findIndex((todo) => todo.Id === id);
   //todo 없으면 오류
   if (index === -1) {
     ctx.status = 404;
@@ -73,7 +77,7 @@ export async function remove(ctx) {
     };
     return;
   }
-  Todos.splice(index, 1);
+  Data.todolist.splice(index, 1);
   await writeJson();
   ctx.status = 204; // no content
 }
@@ -85,7 +89,7 @@ PUT /api/todos/:id
 */
 export async function update(ctx) {
   const { id } = ctx.params;
-  const index = Todos.findIndex((todo) => todo.Id === id);
+  const index = Data.todolist.findIndex((todo) => todo.Id === id);
   //todo 없으면 오류
   if (index === -1) {
     ctx.status = 404;
@@ -94,10 +98,10 @@ export async function update(ctx) {
     };
     return;
   }
-  Todos[index] = {
-    ...Todos[index],
+  Data.todolist[index] = {
+    ...Data.todolist[index],
     ...ctx.request.body,
   };
   await writeJson();
-  ctx.body = Todos[index];
+  ctx.body = Data.todolist[index];
 }
