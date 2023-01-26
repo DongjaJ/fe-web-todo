@@ -111,7 +111,7 @@ header i {
 section {
   width: 23vw;
   max-width: 30%;
-  margin: 0 10px;
+  margin: 0 15px;
   flex-grow: 1;
   flex-shrink: 0;
 }
@@ -132,6 +132,7 @@ section {
 
 .buttons {
   margin-left: auto;
+  margin-right: 17px;
   color: lightgray;
   text-decoration: dashed;
 }
@@ -354,6 +355,10 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.plus-column:hover {
+  transform: scale(1.1);
 }
 
 .dragging {

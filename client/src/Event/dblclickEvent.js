@@ -5,6 +5,7 @@ import { makeInputFormTemplate } from "../template.js";
 import { Todos, TodosStatus } from "../store.js";
 import { autoResizeTextarea } from "../utils.js";
 import { checkColumnNameValidity } from "../validity.js";
+import { getTodo } from "../api/rest.js";
 
 const updateListItem = (update_element) => {
   storeToBeUpdatedItem(update_element);
@@ -31,9 +32,9 @@ const updateColumn = (to_be_updated_column) => {
       TodosStatus[TodosStatus.findIndex((e) => e === before_updated_title)] = updated_column;
 
       Todos.forEach((e) => {
-        console.log(e.Status);
         if (e.Status === before_updated_title) e.Status = updated_column;
       });
+
       render();
     }
   });

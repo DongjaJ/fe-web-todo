@@ -4,6 +4,7 @@ import { getTodo } from "./src/api/rest.js";
 import { dblclickEvent } from "./src/Event/dblclickEvent.js";
 import { clickEvent } from "./src/Event/clickEvent.js";
 import { popupbarEvent } from "./src/Event/popupbarEvent.js";
+import { render } from "./src/render.js";
 
 const init = () => {
   const body = document.body;

@@ -11,6 +11,7 @@ const render = () => {
   let todolist = document.querySelector(".todolist");
   todolist.innerHTML = "";
   TodosStatus.forEach((status) => {
+    console.log("🚘", status);
     const items = Todos.filter((item) => item.Status === status);
     const created_section = makeTodoSection(items, status);
     todolist.insertAdjacentHTML("beforeend", created_section);
