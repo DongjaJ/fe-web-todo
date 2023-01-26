@@ -7,19 +7,21 @@ import { autoResizeTextarea } from "../utils.js";
 import { checkColumnNameValidity } from "../validity.js";
 import { getTodo } from "../api/rest.js";
 
+function updateElement(target) {
+  target.className = "input-items";
+  target.setAttribute("tabindex", "-1");
+  target.innerHTML = makeInputFormTemplate();
+}
+
 const updateListItem = (update_element) => {
   storeToBeUpdatedItem(update_element);
   storeInputData();
-  update_element.className = "input-items";
-  update_element.setAttribute("tabindex", "-1");
-  update_element.innerHTML = makeInputFormTemplate();
+  updateElement(update_element);
   addInputEvent();
 };
 
 const updateColumn = (to_be_updated_column) => {
-  console.log(to_be_updated_column.querySelector(".todo-column"));
   const before_updated_title = to_be_updated_column.querySelector(".todo-column").innerText;
-  console.log(before_updated_title);
   to_be_updated_column.innerHTML = `
       <input class = "update-title" maxlength = 50 value = "${before_updated_title}"></input>
     `;
