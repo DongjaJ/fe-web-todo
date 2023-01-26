@@ -25,10 +25,29 @@ export const postTodo = async (obj) => {
     },
     body: JSON.stringify(obj),
   })
-    .then((res) => console.log(res))
+    .then((res) => {
+      console.log(res);
+    })
     .then(getTodo);
   // render();
 };
+
+//post
+// export const postColumn = async () => {
+//   console.log(TodosStatus);
+//   fetch("http://localhost:5500/api/todos", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ status: TodosStatus }),
+//   })
+//     .then((res) => {
+//       console.log(res);
+//     })
+//     .catch((error) => console.log("error"));
+//   // render();
+// };
 
 //delete
 export const deleteTodo = async (id) => {
