@@ -1,7 +1,4 @@
-import {
-  storeTobeMovedItem,
-  initializeBeforeMovedItem,
-} from "./dataProcessing.js";
+import { storeTobeMovedItem, initializeBeforeMovedItem } from "./dataProcessing.js";
 import { BeforeMovedItem } from "./store.js";
 import { UpdateTodo } from "./api/rest.js";
 document.body.ondragstart = function () {
@@ -72,8 +69,7 @@ export const doDragEvent = (e, origin_item) => {
     document.removeEventListener("mousemove", onMouseMove);
     copy_item.remove();
     origin_item.classList.toggle("dragged");
-    if (origin_item?.closest("section")?.className === BeforeMovedItem.Status)
-      return;
+    if (origin_item?.closest("section")?.className === BeforeMovedItem.Status) return;
     UpdateTodo({
       obj: { Status: origin_item?.closest("section")?.className },
       id: BeforeMovedItem.Id,
@@ -87,22 +83,25 @@ export const doDragEvent = (e, origin_item) => {
   }
 };
 
+function dragEventTimer(event, target) {
+  let isClick = 1;
+  const drag_delay = 150;
+  const timer = setTimeout(() => {
+    if (!isClick) return;
+    isClick = 0;
+    doDragEvent(event, target);
+  }, drag_delay);
+
+  document.onmouseup = () => {
+    clearTimeout(timer);
+    isClick = 0;
+  };
+}
 const dragEvent = (body) => {
   body.addEventListener("mousedown", (e) => {
     const origin_item = e.target.closest(".todolist-items");
-    const drag_delay = 150;
     if (!origin_item) return;
-    let isClick = 1;
-    const timer = setTimeout(() => {
-      if (!isClick) return;
-      isClick = 0;
-      doDragEvent(e, origin_item);
-    }, drag_delay);
-
-    document.onmouseup = () => {
-      clearTimeout(timer);
-      isClick = 0;
-    };
+    dragEventTimer(e, origin_item);
   });
 };
 
