@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+let Status = [];
 let Data = {};
 
 const readJson = async () => {
